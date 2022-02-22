@@ -586,6 +586,11 @@ export const addNodeUnderParent = ({
         }
       }
 
+      // CHANGED - by Rouben Meschian
+      if(parentNode.getChildren && (typeof(parentNode.children) === 'function' || !parentNode.children))
+        parentNode.children = parentNode.getChildren()
+      // CHANGED
+
       if (typeof parentNode.children === 'function') {
         throw new TypeError('Cannot add to children defined by a function')
       }
@@ -626,6 +631,7 @@ const addNodeAtDepthAndIndex = ({
   newNode,
   ignoreCollapsed,
   expandParent,
+  onVisibilityToggle,
   isPseudoRoot = false,
   isLastChild,
   node,
@@ -644,6 +650,12 @@ const addNodeAtDepthAndIndex = ({
     currentIndex >= minimumTreeIndex - 1 ||
     (isLastChild && !(node.children && node.children.length > 0))
   ) {
+
+    // CHANGED - by Rouben Meschian
+    if(node.getChildren && (typeof(node.children) === 'function' || !node.children))
+      node.children = node.getChildren()
+    // CHANGED
+
     if (typeof node.children === 'function') {
       throw new TypeError('Cannot add to children defined by a function')
     } else {
@@ -654,6 +666,11 @@ const addNodeAtDepthAndIndex = ({
         ...extraNodeProps,
         children: node.children ? [newNode, ...node.children] : [newNode],
       }
+
+      // CHANGED - by Rouben Meschian
+      if(node.expanded !== nextNode.expanded)
+        onVisibilityToggle({node, expanded: nextNode.expanded});
+      // CHANGED
 
       return {
         node: nextNode,
@@ -756,6 +773,7 @@ const addNodeAtDepthAndIndex = ({
         newNode,
         ignoreCollapsed,
         expandParent,
+        onVisibilityToggle,
         isLastChild: isLastChild && i === newChildren.length - 1,
         node: child,
         currentIndex: childIndex,
@@ -801,13 +819,15 @@ export const insertNode = ({
   getNodeKey,
   ignoreCollapsed = true,
   expandParent = false,
+  onVisibilityToggle,
 }: FullTree & {
   depth: number
   newNode: TreeItem
   minimumTreeIndex: number
   ignoreCollapsed?: boolean | undefined
   expandParent?: boolean | undefined
-  getNodeKey: GetNodeKeyFunction
+  getNodeKey: GetNodeKeyFunction,
+  onVisibilityToggle?: any,
 }): FullTree & TreeIndex & TreePath & { parentNode: TreeItem | null } => {
   if (!treeData && targetDepth === 0) {
     return {
@@ -824,6 +844,7 @@ export const insertNode = ({
     newNode,
     ignoreCollapsed,
     expandParent,
+    onVisibilityToggle,
     getNodeKey,
     isPseudoRoot: true,
     isLastChild: true,

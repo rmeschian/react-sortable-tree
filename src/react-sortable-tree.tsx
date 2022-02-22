@@ -409,6 +409,9 @@ class ReactSortableTree extends Component {
         minimumTreeIndex: draggedMinimumTreeIndex,
         expandParent: true,
         getNodeKey: this.props.getNodeKey,
+        onVisibilityToggle: (e) => {
+          this.props.onVisibilityToggle({...e, treeData: newDraggingTreeData});
+        },
       })
 
       const rows = this.getRows(addedResult.treeData)
@@ -534,6 +537,7 @@ class ReactSortableTree extends Component {
       depth,
       minimumTreeIndex,
       expandParent: true,
+      onVisibilityToggle: this.props.onVisibilityToggle,
       getNodeKey: this.props.getNodeKey,
     })
 
@@ -630,6 +634,7 @@ class ReactSortableTree extends Component {
       placeholderRenderer,
       getNodeKey,
       rowDirection,
+      onVisibilityToggle,
     } = mergeTheme(this.props)
     const {
       searchMatches,
@@ -647,6 +652,9 @@ class ReactSortableTree extends Component {
     let swapFrom
     let swapLength
     if (draggedNode && draggedMinimumTreeIndex !== undefined) {
+      const onVisibilityHandler = (e) => {
+        this.props.onVisibilityToggle({...e, treeData});
+      }
       const addedResult = memoizedInsertNode({
         treeData,
         newNode: draggedNode,
@@ -654,6 +662,7 @@ class ReactSortableTree extends Component {
         minimumTreeIndex: draggedMinimumTreeIndex,
         expandParent: true,
         getNodeKey,
+        onVisibilityToggle: onVisibilityHandler,
       })
 
       const swapTo = draggedMinimumTreeIndex
