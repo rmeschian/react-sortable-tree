@@ -29,7 +29,7 @@
     "release": "standard-version",
     "storybook": "start-storybook -p ${PORT:-3001} -h 0.0.0.0",
     "postbuild": "yarn copy",
-    "copy": "rimraf dist/tests.d.ts && shx cp -r dist/*.d.ts dist/esm && shx mv dist/* dist && shx cp package.json readme.md LICENSE dist && json -I -f dist/package.json -e \"this.private=false; this.devDependencies=undefined; this.optionalDependencies=undefined; this.scripts=undefined; this.prettier=undefined; this['lint-staged']=undefined;\"",
+    "copy": "rimraf dist/tests.d.ts && shx cp -r dist/*.d.ts dist/esm && shx mv dist/* dist && shx cp .npmrc package.json readme.md LICENSE dist && json -I -f dist/package.json -e \"this.private=false; this.devDependencies=undefined; this.optionalDependencies=undefined; this.scripts=undefined; this.prettier=undefined; this['lint-staged']=undefined;\"",
     "publish:alpha": "cd dist && npm publish --tag alpha",
     "publish:beta": "cd dist && npm publish --tag beta",
     "publish:release": "cd dist && npm publish"
@@ -47,7 +47,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nosferatu500/react-sortable-tree"
+    "url": "https://github.com/rmeschian/react-sortable-tree"
   },
   "keywords": [
     "react",
@@ -63,7 +63,7 @@
     "Vitalii Shvetsov"
   ],
   "license": "MIT",
-  "bugs": "https://github.com/nosferatu500/react-sortable-tree/issues",
+  "bugs": "https://github.com/rmeschian/react-sortable-tree/issues",
   "dependencies": {
     "@nosferatu500/react-dnd-scrollzone": "^2.0.7",
     "lodash.isequal": "^4.5.0",
